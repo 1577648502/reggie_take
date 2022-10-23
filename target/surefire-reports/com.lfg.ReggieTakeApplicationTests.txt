@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.lfg.ReggieTakeApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.309 s - in com.lfg.ReggieTakeApplicationTests
