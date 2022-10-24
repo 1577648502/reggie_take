@@ -8,6 +8,8 @@ import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SendMailServiceImpl implements SendMailService {
@@ -28,6 +31,8 @@ public class SendMailServiceImpl implements SendMailService {
     //注入邮件工具类
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Value("${spring.mail.username}")
     private String sendMailer;
@@ -56,7 +61,10 @@ public class SendMailServiceImpl implements SendMailService {
         String i = String.valueOf((int)(Math.random()*9000)+1000);
 
         //验证码保存到session
-        session.setAttribute(mailRequest.getSendTo(),i);
+//        session.setAttribute(mailRequest.getSendTo(),i);
+
+        //验证码保存到redis
+        redisTemplate.opsForValue().set(mailRequest.getSendTo(),i,5L,TimeUnit.MINUTES);
 
         message.setText(i);
         System.out.println(i);

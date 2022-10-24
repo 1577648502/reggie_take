@@ -1,6 +1,11 @@
 server:
   port: 8080
+
 spring:
+  redis:
+    host: 114.132.232.133
+    port: 6379
+    database: 0
   #邮箱基本配置
   mail:
     #配置smtp服务主机地址
